@@ -1,8 +1,5 @@
 ﻿using AveryHTML;
 
-// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
-
 var doc = new Document(){
     root = new DocumentNode([
 
@@ -14,9 +11,12 @@ var doc = new Document(){
             ]
         )
 
-    ]),
-    title = "Hello World Page",
-    favicon = "test.png"
+    ])
 };
+
+doc.SetTitle("Hello World Page");
+doc.SetFavicon("test.png");
+doc.AddStylesheet("main.css");
+doc.AddScript("main.js");
 
 File.WriteAllText("output.html", doc.Render());
