@@ -7,10 +7,19 @@ public abstract class Node {
 }
 
 public abstract class ParentNode : Node {
-    public Node[] children = [];
+    public List<Node> children = [];
 
     public override string Render(){
         return string.Join("", children.Select(c => c.Render()));
+    }
+
+    public Node AddChild(Node child){
+        children.Add(child);
+        return child;
+    }
+
+    public void AddChildren(IEnumerable<Node> _children){
+        children.AddRange(_children);
     }
 }
 
@@ -26,8 +35,9 @@ public class DataNode : Node {
 
 public class DocumentNode : ParentNode {
 
-    public DocumentNode(Node[] _children){
-        children = _children;
+    public DocumentNode(IEnumerable<Node>? _children = null){
+        if(_children is not null)
+            children = _children.ToList();
     }
 
 }
@@ -36,10 +46,12 @@ public class ElementNode : ParentNode {
     public string tag;
     public (string, string)[] attributes = [];
 
-    public ElementNode(string _tag, (string, string)[] _attributes, Node[] _children){
+    public ElementNode(string _tag, (string, string)[]? _attributes = null, IEnumerable<Node>? _children = null){
         tag = _tag;
-        attributes = _attributes;
-        children = _children;
+        if(_attributes is not null)
+            attributes = _attributes;
+        if(_children is not null)
+            children = _children.ToList();
     }
 
     public override string Render(){
