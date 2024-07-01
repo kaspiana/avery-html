@@ -12,6 +12,6 @@ var body = new ElementNode(
 );
 doc.root.AddChild(body);
 body.AddChild(new DataNode("Hello world."));
-body.AddChild(new DataNode("My name is Rose."));
+body.AddChild(new DataNode("My name is <Rose>."));
 
 File.WriteAllText("output.html", doc.Render());

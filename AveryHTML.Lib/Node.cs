@@ -1,5 +1,7 @@
 namespace AveryHTML;
 
+using System.Web;
+
 public abstract class Node {
     public ParentNode? parent = null;
 
@@ -30,7 +32,7 @@ public class DataNode : Node {
         data = _data;
     }
 
-    public override string Render() => data; // TODO: Handle escaping characters
+    public override string Render() => HttpUtility.HtmlEncode(data);
 }
 
 public class DocumentNode : ParentNode {
