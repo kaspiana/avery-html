@@ -3,16 +3,20 @@
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
 
-var doc = new DocumentNode([
+var doc = new Document(){
+    root = new DocumentNode([
 
-    new ElementNode(
-        "div",
-        [("id", "main_div")],
-        [
-            new DataNode("Hello World.")
-        ]
-    )
+        new ElementNode(
+            "body",
+            [("id", "main")],
+            [
+                new DataNode("Hello World.")
+            ]
+        )
 
-]);
+    ]),
+    title = "Hello World Page",
+    favicon = "test.png"
+};
 
-Console.WriteLine(doc.Render());
+File.WriteAllText("output.html", doc.Render());

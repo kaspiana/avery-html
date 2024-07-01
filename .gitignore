@@ -2,3 +2,5 @@ AveryHTML.Lib/bin
 AveryHTML.Lib/obj
 AveryHTML.Main/bin
 AveryHTML.Main/obj
+*.html
+*.json
