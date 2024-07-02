@@ -1,17 +1,16 @@
 ﻿using AveryHTML;
 
-var doc = new Document();
-doc.SetTitle("Hello World Page");
-doc.SetFavicon("test.png");
-doc.AddStylesheet("main.css");
-doc.AddScript("main.js");
+var page = new Page();
+page.SetTitle("Hello World Page");
+page.SetFavicon("test.png");
+page.AddStylesheet("main.css");
+page.AddScript("main.js");
 
-var body = new ElementNode(
-    "body",
-    [("id", "main")]
-);
-doc.root.AddChild(body);
+var body = new ElementNode("body", [
+    ("id", "main")
+]);
+page.root.AddChild(body);
 body.AddChild(new DataNode("Hello world."));
 body.AddChild(new DataNode("My name is <Rose>."));
 
-File.WriteAllText("output.html", doc.Render());
+page.RenderToFile("output.html");

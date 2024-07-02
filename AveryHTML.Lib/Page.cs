@@ -1,6 +1,6 @@
 namespace AveryHTML;
 
-public class Document {
+public class Page {
     public DocumentNode root = new([]);
     public string? title;
     public string? favicon;
@@ -38,5 +38,9 @@ $@"<!DOCTYPE html>
 </html>
 <!-- BUILT AT {DateTime.Now} -->";
 
+    }
+
+    public void RenderToFile(string filename){
+        File.WriteAllText(filename, Render());
     }
 }
