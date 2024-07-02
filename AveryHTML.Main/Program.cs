@@ -6,7 +6,7 @@ page.SetFavicon("test.png");
 page.AddStylesheet("main.css");
 page.AddScript("main.js");
 
-var body = new ElementNode("body", [("id", "main")]);
+var body = new ElementNode("body", [("id", "main"), ("other", "meow")]);
 body.Write(new DataNode("Hello world."));
 body.Write(new DataNode("My name is <Rose>."));
 

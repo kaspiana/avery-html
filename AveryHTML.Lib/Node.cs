@@ -72,7 +72,7 @@ public class ElementNode : ParentNode {
     }
 
     public override string Render(){
-        return $"<{tag} {string.Join("", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render()}</{tag}>";
+        return $"<{tag} {string.Join(" ", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render()}</{tag}>";
     }
 
     public override ElementNode Copy(){
