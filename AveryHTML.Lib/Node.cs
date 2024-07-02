@@ -7,6 +7,14 @@ public abstract class Node {
 
     public abstract string Render();
     public abstract Node Copy();
+
+    public void Reparent(ParentNode? newParent){
+        if(parent is not null){
+            parent.children.Remove(this);
+        }
+
+        parent = newParent;
+    }
 }
 
 public abstract class ParentNode : Node {
@@ -18,11 +26,13 @@ public abstract class ParentNode : Node {
 
     public Node Write(Node node){
         children.Add(node);
+        node.Reparent(this);
         return node;
     }
 
     public Node WriteBefore(Node node){
         children.Insert(0, node);
+        node.Reparent(this);
         return node;
     }
 
