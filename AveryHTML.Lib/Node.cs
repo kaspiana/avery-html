@@ -46,17 +46,17 @@ public class DocumentNode : ParentNode {
 
 public class ElementNode : ParentNode {
     public string tag;
-    public (string, string)[] attributes = [];
+    public Dictionary<string, string> attributes = [];
 
     public ElementNode(string _tag, (string, string)[]? _attributes = null, IEnumerable<Node>? _children = null){
         tag = _tag;
         if(_attributes is not null)
-            attributes = _attributes;
+            attributes = _attributes.ToDictionary();
         if(_children is not null)
             children = _children.ToList();
     }
 
     public override string Render(){
-        return $"<{tag} {string.Join("", attributes.Select(t => $"{t.Item1}=\"{t.Item2}\""))}>{base.Render()}</{tag}>";
+        return $"<{tag} {string.Join("", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render()}</{tag}>";
     }
 }
