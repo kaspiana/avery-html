@@ -6,6 +6,7 @@ public abstract class Node {
     public ParentNode? parent = null;
 
     public abstract string Render();
+    public abstract Node Copy();
 }
 
 public abstract class ParentNode : Node {
@@ -39,6 +40,10 @@ public class DataNode : Node {
     }
 
     public override string Render() => HttpUtility.HtmlEncode(data);
+
+    public override DataNode Copy(){
+        return new DataNode(data);
+    }
 }
 
 public class DocumentNode : ParentNode {
@@ -48,13 +53,17 @@ public class DocumentNode : ParentNode {
             children = _children.ToList();
     }
 
+    public override DocumentNode Copy(){
+        return new DocumentNode(children.Select(c => c.Copy()));
+    }
+
 }
 
 public class ElementNode : ParentNode {
     public string tag;
     public Dictionary<string, string> attributes = [];
 
-    public ElementNode(string _tag, IEnumerable<(string, string)>? _attributes = null, IEnumerable<Node>? _children = null){
+    public ElementNode(string _tag, IEnumerable<(string Key, string Value)>? _attributes = null, IEnumerable<Node>? _children = null){
         tag = _tag;
         if(_attributes is not null)
             attributes = _attributes.ToDictionary();
@@ -64,5 +73,9 @@ public class ElementNode : ParentNode {
 
     public override string Render(){
         return $"<{tag} {string.Join("", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render()}</{tag}>";
+    }
+
+    public override ElementNode Copy(){
+        return new ElementNode(tag, attributes.Select(t => (t.Key, t.Value)), children.Select(c => c.Copy()));
     }
 }
