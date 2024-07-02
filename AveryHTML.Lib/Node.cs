@@ -15,13 +15,19 @@ public abstract class ParentNode : Node {
         return string.Join("", children.Select(c => c.Render()));
     }
 
-    public Node AddChild(Node child){
-        children.Add(child);
-        return child;
+    public Node Write(Node node){
+        children.Add(node);
+        return node;
     }
 
-    public void AddChildren(IEnumerable<Node> _children){
-        children.AddRange(_children);
+    public Node WriteBefore(Node node){
+        children.Insert(0, node);
+        return node;
+    }
+
+    public Node Overwrite(Node node){
+        children = [];
+        return Write(node);
     }
 }
 
@@ -48,7 +54,7 @@ public class ElementNode : ParentNode {
     public string tag;
     public Dictionary<string, string> attributes = [];
 
-    public ElementNode(string _tag, (string, string)[]? _attributes = null, IEnumerable<Node>? _children = null){
+    public ElementNode(string _tag, IEnumerable<(string, string)>? _attributes = null, IEnumerable<Node>? _children = null){
         tag = _tag;
         if(_attributes is not null)
             attributes = _attributes.ToDictionary();
