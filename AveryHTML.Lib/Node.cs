@@ -143,6 +143,9 @@ public class ElementNode : ParentNode {
     }
 
     public override string Render(Page page){
+        // special case
+        if(tag == "br") return "<br>";
+
         return $"<{tag} {string.Join(" ", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render(page)}</{tag}>";
     }
 
