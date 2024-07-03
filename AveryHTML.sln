@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AveryHTML.Lib", "AveryHTML.Lib\AveryHTML.Lib.csproj", "{A9227456-436E-4EA2-9E92-0613D178A03C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AveryHTML.Main", "AveryHTML.Main\AveryHTML.Main.csproj", "{A1DBF2E9-A159-4331-8CE1-718334D4FA61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AveryHTML.Test", "AveryHTML.Test\AveryHTML.Test.csproj", "{A1DBF2E9-A159-4331-8CE1-718334D4FA61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
