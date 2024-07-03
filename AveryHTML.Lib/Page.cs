@@ -36,7 +36,7 @@ $@"<!DOCTYPE html>
         {string.Join("", stylesheets.Select((s) => $"<link href=\"{s}\" rel=\"stylesheet\" type=\"text/css\" />"))}
         {string.Join("", scripts.Select((s) => $"<script src=\"{s}\" type=\"text/javascript\"></script>"))}
     </head>
-    {root.Render(this)}
+    {root.Render()}
 </html>
 <!-- BUILT AT {DateTime.Now} -->";
 

@@ -6,7 +6,7 @@ using NLua;
 public abstract class Node {
     public ParentNode? parent = null;
 
-    public abstract string Render(Page page);
+    public abstract string Render();
     public abstract Node Copy();
 
     public void Reparent(ParentNode? newParent){
@@ -21,8 +21,8 @@ public abstract class Node {
 public abstract class ParentNode : Node {
     public List<Node> children = [];
 
-    public override string Render(Page page){
-        return string.Join("", children.Select(c => c.Render(page)));
+    public override string Render(){
+        return string.Join("", children.Select(c => c.Render()));
     }
 
     public void WriteAt(int index, Node node){
@@ -71,6 +71,20 @@ public abstract class ParentNode : Node {
     public void OverwriteStr(string html){
         Overwrite(HTML.Parse(html));
     }
+
+    public ElementNode? Get(string id){
+        
+        if((this is ElementNode) && ((this as ElementNode)?.attributes.GetValueOrDefault("id", null) == id))
+            return this as ElementNode;
+        
+        foreach(var child in this.children.OfType<ParentNode>()){
+            var result = child.Get(id);
+            if(result is not null)
+                return result;
+        }
+
+        return null;
+    }
 }
 
 public class DataNode : Node {
@@ -80,7 +94,7 @@ public class DataNode : Node {
         data = _data;
     }
 
-    public override string Render(Page page) => HttpUtility.HtmlEncode(data);
+    public override string Render() => HttpUtility.HtmlEncode(data);
 
     public override DataNode Copy(){
         return new DataNode(data);
@@ -150,11 +164,11 @@ public class ElementNode : ParentNode {
         return attributes[key];
     }
 
-    public override string Render(Page page){
+    public override string Render(){
         // special case
         if(tag == "br") return "<br>";
 
-        return $"<{tag} {string.Join(" ", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render(page)}</{tag}>";
+        return $"<{tag} {string.Join(" ", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render()}</{tag}>";
     }
 
     public override ElementNode Copy(){
@@ -169,7 +183,7 @@ public class LuaNode : Node {
         data = _data;
     }
 
-    public override string Render(Page page){
+    public override string Render(){
         return LuaContext.state.DoString(data)[0] as string ?? "";
     }
 
