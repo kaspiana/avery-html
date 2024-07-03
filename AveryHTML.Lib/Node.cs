@@ -24,21 +24,31 @@ public abstract class ParentNode : Node {
         return string.Join("", children.Select(c => c.Render()));
     }
 
-    public Node Write(Node node){
-        children.Add(node);
-        node.Reparent(this);
-        return node;
+    public void WriteAt(int index, Node node){
+        if(node is FragmentNode){
+            var fragNode = node as FragmentNode;
+            var i = 0;
+            foreach(var child in fragNode.children){
+                children.Insert(index + (i++), child);
+                child.Reparent(this);
+            }
+        } else {
+            children.Insert(index, node);
+            node.Reparent(this);
+        }
     }
 
-    public Node WriteBefore(Node node){
-        children.Insert(0, node);
-        node.Reparent(this);
-        return node;
+    public void Write(Node node){
+        WriteAt(children.Count, node);
     }
 
-    public Node Overwrite(Node node){
+    public void WriteBefore(Node node){
+        WriteAt(0, node);
+    }
+
+    public void Overwrite(Node node){
         children = [];
-        return Write(node);
+        Write(node);
     }
 }
 
@@ -65,6 +75,15 @@ public class DocumentNode : ParentNode {
 
     public override DocumentNode Copy(){
         return new DocumentNode(children.Select(c => c.Copy()));
+    }
+
+}
+
+public class FragmentNode : DocumentNode {
+
+    public FragmentNode(IEnumerable<Node>? _children = null){
+        if(_children is not null)
+            children = _children.ToList();
     }
 
 }
