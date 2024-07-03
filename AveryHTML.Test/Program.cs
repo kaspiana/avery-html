@@ -1,11 +1,10 @@
 ﻿using AveryHTML;
 using NLua;
 
-Lua lua = new();
+string[] files = [
+    "test.lua"
+];
 
-lua.LoadCLRPackage();
-lua.DoString(@"
-    import('AveryHTML.Lib', 'AveryHTML')
-");
-
-lua.DoFile("test.lua");
+foreach(var file in files){  
+    LuaContext.state.DoFile(file);
+}

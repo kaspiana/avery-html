@@ -4,22 +4,10 @@ namespace AveryHTML;
 
 public class Page {
     public DocumentNode root = new([]);
-    public Lua luaState = new();
     public string? title;
     public string? favicon;
     public List<string> stylesheets = [];
     public List<string> scripts = [];
-
-    public Page(){
-        luaState.LoadCLRPackage();
-        luaState.DoString(@"
-            import('AveryHTML.Lib', 'AveryHTML')
-        ");
-    }
-
-    public Page(Lua _luaState){
-        luaState = _luaState;
-    }
 
     public void SetTitle(string _title){
         title = _title;

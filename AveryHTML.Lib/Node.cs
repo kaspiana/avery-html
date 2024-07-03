@@ -159,7 +159,7 @@ public class LuaNode : Node {
     }
 
     public override string Render(Page page){
-        return page.luaState.DoString(data)[0] as string ?? "";
+        return LuaContext.state.DoString(data)[0] as string ?? "";
     }
 
     public override LuaNode Copy(){
