@@ -30,8 +30,8 @@ $@"<!DOCTYPE html>
 <html>
     <head>
         {(title is not null ? $"<title>{title}</title>" : "")}
-        {(favicon is not null ? $"<link rel=\"shortcut icon\" href=\"{favicon}\">" : "")}
-        {string.Join("", stylesheets.Select((s) => $"<link href=\"{s}\" rel=\"stylesheet\" type=\"text/css\">"))}
+        {(favicon is not null ? $"<link rel=\"shortcut icon\" href=\"{favicon}\" />" : "")}
+        {string.Join("", stylesheets.Select((s) => $"<link href=\"{s}\" rel=\"stylesheet\" type=\"text/css\" />"))}
         {string.Join("", scripts.Select((s) => $"<script src=\"{s}\" type=\"text/javascript\"></script>"))}
     </head>
     {root.Render()}
