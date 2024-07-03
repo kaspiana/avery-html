@@ -1,11 +1,25 @@
+using NLua;
+
 namespace AveryHTML;
 
 public class Page {
     public DocumentNode root = new([]);
+    public Lua luaState = new();
     public string? title;
     public string? favicon;
     public List<string> stylesheets = [];
     public List<string> scripts = [];
+
+    public Page(){
+        luaState.LoadCLRPackage();
+        luaState.DoString(@"
+            import('AveryHTML.Lib', 'AveryHTML')
+        ");
+    }
+
+    public Page(Lua _luaState){
+        luaState = _luaState;
+    }
 
     public void SetTitle(string _title){
         title = _title;
@@ -34,7 +48,7 @@ $@"<!DOCTYPE html>
         {string.Join("", stylesheets.Select((s) => $"<link href=\"{s}\" rel=\"stylesheet\" type=\"text/css\" />"))}
         {string.Join("", scripts.Select((s) => $"<script src=\"{s}\" type=\"text/javascript\"></script>"))}
     </head>
-    {root.Render()}
+    {root.Render(this)}
 </html>
 <!-- BUILT AT {DateTime.Now} -->";
 

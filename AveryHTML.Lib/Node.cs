@@ -6,7 +6,7 @@ using NLua;
 public abstract class Node {
     public ParentNode? parent = null;
 
-    public abstract string Render();
+    public abstract string Render(Page page);
     public abstract Node Copy();
 
     public void Reparent(ParentNode? newParent){
@@ -21,8 +21,8 @@ public abstract class Node {
 public abstract class ParentNode : Node {
     public List<Node> children = [];
 
-    public override string Render(){
-        return string.Join("", children.Select(c => c.Render()));
+    public override string Render(Page page){
+        return string.Join("", children.Select(c => c.Render(page)));
     }
 
     public void WriteAt(int index, Node node){
@@ -80,7 +80,7 @@ public class DataNode : Node {
         data = _data;
     }
 
-    public override string Render() => HttpUtility.HtmlEncode(data);
+    public override string Render(Page page) => HttpUtility.HtmlEncode(data);
 
     public override DataNode Copy(){
         return new DataNode(data);
@@ -142,11 +142,27 @@ public class ElementNode : ParentNode {
         }
     }
 
-    public override string Render(){
-        return $"<{tag} {string.Join(" ", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render()}</{tag}>";
+    public override string Render(Page page){
+        return $"<{tag} {string.Join(" ", attributes.Select((t) => $"{t.Key}=\"{t.Value}\""))}>{base.Render(page)}</{tag}>";
     }
 
     public override ElementNode Copy(){
         return new ElementNode(tag, attributes.Select(t => (t.Key, t.Value)).ToDictionary(), children.Select(c => c.Copy()).ToArray());
+    }
+}
+
+public class LuaNode : Node {
+    public string data;
+
+    public LuaNode(string _data){
+        data = _data;
+    }
+
+    public override string Render(Page page){
+        return page.luaState.DoString(data)[0] as string ?? "";
+    }
+
+    public override LuaNode Copy(){
+        return new LuaNode(data);
     }
 }
