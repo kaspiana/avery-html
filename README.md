@@ -1,3 +1,12 @@
 # Avery
 
-Avery is a C# library which allows for static HTML pages to be rendered from templates and data files. It is intended for personal use.
+Avery is a tool which allows static web pages to be rendered from template files and Lua script files.
+
+# Early work
+
+- HTML tree manipulation
+
+# Todo
+
+- HTML parsing
+- Lua integration
