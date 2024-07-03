@@ -4,3 +4,4 @@ AveryHTML.Test/bin
 AveryHTML.Test/obj
 *.html
 *.json
+*.lua
