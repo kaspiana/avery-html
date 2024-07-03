@@ -1,6 +1,6 @@
 AveryHTML.Lib/bin
 AveryHTML.Lib/obj
-AveryHTML.Main/bin
-AveryHTML.Main/obj
+AveryHTML.Test/bin
+AveryHTML.Test/obj
 *.html
 *.json
