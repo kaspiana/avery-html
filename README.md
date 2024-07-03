@@ -6,7 +6,8 @@ Avery is a tool which allows static web pages to be rendered from template files
 
 - HTML tree manipulation
 - HTML parsing
+- Lua integration
 
 # Todo
 
-- Lua integration
+- The tool itself

@@ -1,6 +1,7 @@
 namespace AveryHTML;
 
 using System.Web;
+using NLua;
 
 public abstract class Node {
     public ParentNode? parent = null;
@@ -88,22 +89,29 @@ public class DataNode : Node {
 
 public class DocumentNode : ParentNode {
 
-    public DocumentNode(IEnumerable<Node>? _children = null){
+    public DocumentNode(Node[]? _children = null){
         if(_children is not null)
             children = _children.ToList();
     }
 
+    public DocumentNode(LuaTable? _children = null){
+        if(_children is not null){
+            children = [.. _children.Values.Cast<Node>()];
+        }
+    }
+
     public override DocumentNode Copy(){
-        return new DocumentNode(children.Select(c => c.Copy()));
+        return new DocumentNode(children.Select(c => c.Copy()).ToArray());
     }
 
 }
 
 public class FragmentNode : DocumentNode {
 
-    public FragmentNode(IEnumerable<Node>? _children = null){
-        if(_children is not null)
-            children = _children.ToList();
+    public FragmentNode(Node[]? _children = null) : base(_children) {
+    }
+
+    public FragmentNode(LuaTable? _children = null) : base(_children) {
     }
 
 }
@@ -112,12 +120,26 @@ public class ElementNode : ParentNode {
     public string tag;
     public Dictionary<string, string> attributes = [];
 
-    public ElementNode(string _tag, IEnumerable<(string Key, string Value)>? _attributes = null, IEnumerable<Node>? _children = null){
+    public ElementNode(string _tag, Dictionary<string, string>? _attributes = null, Node[]? _children = null){
         tag = _tag;
         if(_attributes is not null)
-            attributes = _attributes.ToDictionary();
+            attributes = _attributes;
         if(_children is not null)
             children = _children.ToList();
+    }
+
+    public ElementNode(string _tag, LuaTable? _attributes = null, LuaTable? _children = null){
+        tag = _tag;
+
+        if(_attributes is not null){
+            foreach(string key in _attributes.Keys){
+                attributes[key] = _attributes[key] as string;
+            }
+        }
+
+        if(_children is not null){
+            children = [.. _children.Values.Cast<Node>()];
+        }
     }
 
     public override string Render(){
@@ -125,6 +147,6 @@ public class ElementNode : ParentNode {
     }
 
     public override ElementNode Copy(){
-        return new ElementNode(tag, attributes.Select(t => (t.Key, t.Value)), children.Select(c => c.Copy()));
+        return new ElementNode(tag, attributes.Select(t => (t.Key, t.Value)).ToDictionary(), children.Select(c => c.Copy()).ToArray());
     }
 }

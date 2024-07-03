@@ -26,7 +26,7 @@ public class HTML {
                 attributes[i] = (attrib.Name, attrib.Value);
             }
 
-            return new ElementNode(xmlElNode.Name, attributes, children);
+            return new ElementNode(xmlElNode.Name, attributes.ToDictionary(), children);
         }
 
         throw new UnreachableException();

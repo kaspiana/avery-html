@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AveryHTML.Lib\AveryHTML.Lib.csproj" />
+    <PackageReference Include="NLua" Version="1.7.3" />
   </ItemGroup>
 
   <PropertyGroup>

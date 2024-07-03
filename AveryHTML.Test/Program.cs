@@ -1,16 +1,11 @@
 ﻿using AveryHTML;
+using NLua;
 
-var page = new Page();
-page.SetTitle("Hello World Page");
-page.SetFavicon("test.png");
-page.AddStylesheet("main.css");
-page.AddScript("main.js");
+Lua lua = new();
 
-page.root.Write(@"
-    <body id=""main"" other=""meow"">
-        Hello world.<br>
-        My name is Rose.
-    </body>
+lua.LoadCLRPackage();
+lua.DoString(@"
+    import('AveryHTML.Lib', 'AveryHTML')
 ");
 
-page.RenderToFile("output.html");
+lua.DoFile("test.lua");
