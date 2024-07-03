@@ -47,19 +47,19 @@ public abstract class ParentNode : Node {
         WriteAt(children.Count, node);
     }
 
-    public void Write(string html){
+    public void WriteStr(string html){
         Write(HTML.Parse(html));
     }
 
     public void Include(string filename){
-        Write(File.ReadAllText(filename));
+        WriteStr(File.ReadAllText(filename));
     }
 
     public void WriteBefore(Node node){
         WriteAt(0, node);
     }
 
-    public void WriteBefore(string html){
+    public void WriteBeforeStr(string html){
         WriteBefore(HTML.Parse(html));
     }
 
@@ -68,7 +68,7 @@ public abstract class ParentNode : Node {
         Write(node);
     }
 
-    public void Overwrite(string html){
+    public void OverwriteStr(string html){
         Overwrite(HTML.Parse(html));
     }
 }
