@@ -36,6 +36,7 @@ public class HTML {
 
         // hacky HTML -> XHTML tidying
         data = data.Replace("<br>", "<br />");
+        data = $"<root>{data}</root>";
 
         var xml = new XmlDocument();
         xml.LoadXml(data);
@@ -43,7 +44,7 @@ public class HTML {
         if(xml.DocumentElement is null)
             return new FragmentNode([]);
 
-        var node = XMLNodeToNode(xml.DocumentElement);
+        var node = XMLNodeToNode(xml.DocumentElement.FirstChild);
 
         return new FragmentNode([node]);
     }

@@ -50,6 +50,10 @@ public abstract class ParentNode : Node {
         Write(HTML.Parse(html));
     }
 
+    public void Include(string filename){
+        Write(File.ReadAllText(filename));
+    }
+
     public void WriteBefore(Node node){
         WriteAt(0, node);
     }
