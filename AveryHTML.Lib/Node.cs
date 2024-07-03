@@ -142,6 +142,14 @@ public class ElementNode : ParentNode {
         }
     }
 
+    public void SetAttribute(string key, string value){
+        attributes[key] = value;
+    }
+
+    public string GetAttribute(string key){
+        return attributes[key];
+    }
+
     public override string Render(Page page){
         // special case
         if(tag == "br") return "<br>";
