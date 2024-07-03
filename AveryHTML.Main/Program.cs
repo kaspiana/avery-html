@@ -6,11 +6,11 @@ page.SetFavicon("test.png");
 page.AddStylesheet("main.css");
 page.AddScript("main.js");
 
-page.root.Write(HTML.Parse(@"
+page.root.Write(@"
     <body id=""main"" other=""meow"">
         Hello world.<br>
         My name is Rose.
     </body>
-"));
+");
 
 page.RenderToFile("output.html");

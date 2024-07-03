@@ -38,17 +38,33 @@ public abstract class ParentNode : Node {
         }
     }
 
+    public void WriteAt(int index, string html){
+        WriteAt(index, HTML.Parse(html));
+    }
+
     public void Write(Node node){
         WriteAt(children.Count, node);
+    }
+
+    public void Write(string html){
+        Write(HTML.Parse(html));
     }
 
     public void WriteBefore(Node node){
         WriteAt(0, node);
     }
 
+    public void WriteBefore(string html){
+        WriteBefore(HTML.Parse(html));
+    }
+
     public void Overwrite(Node node){
         children = [];
         Write(node);
+    }
+
+    public void Overwrite(string html){
+        Overwrite(HTML.Parse(html));
     }
 }
 
