@@ -85,6 +85,41 @@ public abstract class ParentNode : Node {
 
         return null;
     }
+
+    public void OverwriteStrInner(LuaTable table){
+        foreach(string key in table.Keys){
+            Get(key).OverwriteStr(table[key] as string);
+        }
+    }
+
+    public void IncludeInner(LuaTable table){
+        foreach(string key in table.Keys){
+            Get(key).Include(table[key] as string);
+        }
+    }
+
+    public void SetAttributeInner(LuaTable table){
+        foreach(string id in table.Keys){
+            var attribs = (table[id] as LuaTable);
+            foreach(string attribKey in attribs.Keys){
+                Get(id).SetAttribute(attribKey, attribs[attribKey] as string);
+            }
+        }
+    }
+
+    public void SetInner(LuaTable table){
+        foreach(string id in table.Keys){
+            var attribs = (table[id] as LuaTable);
+            foreach(string attribKey in attribs.Keys){
+                if(attribKey == "_" || attribKey == "_w")
+                    Get(id).OverwriteStr(attribs[attribKey] as string);
+                else if(attribKey == "_i")
+                    Get(id).Include(attribs[attribKey] as string);
+                else
+                    Get(id).SetAttribute(attribKey, attribs[attribKey] as string);
+            }
+        }
+    }
 }
 
 public class DataNode : Node {
