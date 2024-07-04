@@ -42,7 +42,7 @@ $@"<!DOCTYPE html>
 
     }
 
-    public void RenderToFile(string filename){
+    public void Output(string filename){
         File.WriteAllText(filename, Render());
     }
 }
