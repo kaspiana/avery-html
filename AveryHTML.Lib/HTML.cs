@@ -8,17 +8,17 @@ public class HTML {
     private static Node XMLNodeToNode(XmlNode xmlNode){
         
         if(xmlNode.NodeType == XmlNodeType.Text){
-            var xmlTextNode = xmlNode as XmlText;
+            var xmlTextNode = xmlNode as XmlText ?? throw new UnreachableException();
             return new DataNode(xmlTextNode.InnerText);
         }
 
         if(xmlNode.NodeType == XmlNodeType.Element){
-            var xmlElNode = xmlNode as XmlElement;
+            var xmlElNode = xmlNode as XmlElement ?? throw new UnreachableException();;
 
             if(xmlElNode.Name == "script"){
-                if(xmlElNode.Attributes["type"].Value == "text/lua"){
+                if(xmlElNode.Attributes["type"]?.Value == "text/lua"){
                     if(xmlElNode.Attributes["src"] is not null){
-                        return new LuaNode(File.ReadAllText(xmlElNode.Attributes["src"].Value));
+                        return new LuaNode(File.ReadAllText(xmlElNode.Attributes["src"]?.Value ?? ""));
                     } else {
                         return new LuaNode(xmlElNode.InnerText);
                     }
@@ -27,9 +27,10 @@ public class HTML {
                 return new LuaNode("return " + xmlElNode.InnerText);
             }
 
-            var children = new Node?[xmlElNode.ChildNodes.Count];
+            var children = new Node[xmlElNode.ChildNodes.Count];
             for(var i = 0; i < xmlElNode.ChildNodes.Count; i++){
-                children[i] = XMLNodeToNode(xmlElNode.ChildNodes[i]);
+                var child = xmlElNode.ChildNodes[i] ?? throw new UnreachableException();
+                children[i] = XMLNodeToNode(child);
             }
 
             var attributes = new (string Key, string Value)[xmlElNode.Attributes.Count];
@@ -56,7 +57,7 @@ public class HTML {
         if(xml.DocumentElement is null)
             return new FragmentNode([]);
 
-        var node = XMLNodeToNode(xml.DocumentElement) as ParentNode;
+        var node = XMLNodeToNode(xml.DocumentElement) as ParentNode  ?? throw new UnreachableException();
 
         return new FragmentNode(node.children.ToArray());
     }

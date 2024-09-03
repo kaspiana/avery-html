@@ -1,5 +1,6 @@
 namespace AveryHTML;
 
+using System.Diagnostics;
 using System.Web;
 using NLua;
 
@@ -27,7 +28,7 @@ public abstract class ParentNode : Node {
 
     public void WriteAt(int index, Node node){
         if(node is FragmentNode){
-            var fragNode = node as FragmentNode;
+            var fragNode = node as FragmentNode  ?? throw new UnreachableException();
             var i = 0;
             foreach(var child in fragNode.children){
                 children.Insert(index + (i++), child);
@@ -74,7 +75,7 @@ public abstract class ParentNode : Node {
 
     public ElementNode? Get(string id){
         
-        if((this is ElementNode) && ((this as ElementNode)?.attributes.GetValueOrDefault("id", null) == id))
+        if((this is ElementNode) && ((this as ElementNode)?.attributes.GetValueOrDefault("id", "") == id))
             return this as ElementNode;
         
         foreach(var child in this.children.OfType<ParentNode>()){
@@ -88,35 +89,35 @@ public abstract class ParentNode : Node {
 
     public void OverwriteStrInner(LuaTable table){
         foreach(string key in table.Keys){
-            Get(key).OverwriteStr(table[key] as string);
+            (Get(key) ?? throw new UnreachableException()).OverwriteStr(table[key] as string ?? throw new UnreachableException());
         }
     }
 
     public void IncludeInner(LuaTable table){
         foreach(string key in table.Keys){
-            Get(key).Include(table[key] as string);
+            (Get(key) ?? throw new UnreachableException()).Include(table[key] as string ?? throw new UnreachableException());
         }
     }
 
     public void SetAttributeInner(LuaTable table){
         foreach(string id in table.Keys){
-            var attribs = (table[id] as LuaTable);
+            var attribs = table[id] as LuaTable ?? throw new UnreachableException();
             foreach(string attribKey in attribs.Keys){
-                Get(id).SetAttribute(attribKey, attribs[attribKey] as string);
+                (Get(id) ?? throw new UnreachableException()).SetAttribute(attribKey, attribs[attribKey] as string ?? throw new UnreachableException());
             }
         }
     }
 
     public void SetInner(LuaTable table){
         foreach(string id in table.Keys){
-            var attribs = (table[id] as LuaTable);
+            var attribs = table[id] as LuaTable ?? throw new UnreachableException();
             foreach(string attribKey in attribs.Keys){
                 if(attribKey == "_" || attribKey == "_w")
-                    Get(id).OverwriteStr(attribs[attribKey] as string);
+                    (Get(id) ?? throw new UnreachableException()).OverwriteStr(attribs[attribKey] as string ?? throw new UnreachableException());
                 else if(attribKey == "_i")
-                    Get(id).Include(attribs[attribKey] as string);
+                    (Get(id) ?? throw new UnreachableException()).Include(attribs[attribKey] as string ?? throw new UnreachableException());
                 else
-                    Get(id).SetAttribute(attribKey, attribs[attribKey] as string);
+                    (Get(id) ?? throw new UnreachableException()).SetAttribute(attribKey, attribs[attribKey] as string ?? throw new UnreachableException());
             }
         }
     }
@@ -182,7 +183,7 @@ public class ElementNode : ParentNode {
 
         if(_attributes is not null){
             foreach(string key in _attributes.Keys){
-                attributes[key] = _attributes[key] as string;
+                attributes[key] = _attributes[key] as string ?? throw new UnreachableException();
             }
         }
 
