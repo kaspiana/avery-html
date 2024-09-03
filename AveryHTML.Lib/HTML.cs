@@ -15,6 +15,18 @@ public class HTML {
         if(xmlNode.NodeType == XmlNodeType.Element){
             var xmlElNode = xmlNode as XmlElement;
 
+            if(xmlElNode.Name == "script"){
+                if(xmlElNode.Attributes["type"].Value == "text/lua"){
+                    if(xmlElNode.Attributes["src"] is not null){
+                        return new LuaNode(File.ReadAllText(xmlElNode.Attributes["src"].Value));
+                    } else {
+                        return new LuaNode(xmlElNode.InnerText);
+                    }
+                }
+            } else if(xmlElNode.Name == "var"){
+                return new LuaNode("return " + xmlElNode.InnerText);
+            }
+
             var children = new Node?[xmlElNode.ChildNodes.Count];
             for(var i = 0; i < xmlElNode.ChildNodes.Count; i++){
                 children[i] = XMLNodeToNode(xmlElNode.ChildNodes[i]);
