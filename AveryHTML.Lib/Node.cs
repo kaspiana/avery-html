@@ -210,19 +210,3 @@ public class ElementNode : ParentNode {
         return new ElementNode(tag, attributes.Select(t => (t.Key, t.Value)).ToDictionary(), children.Select(c => c.Copy()).ToArray());
     }
 }
-
-public class LuaNode : Node {
-    public string data;
-
-    public LuaNode(string _data){
-        data = _data;
-    }
-
-    public override string Render(){
-        return LuaContext.state.DoString(data)[0] as string ?? "";
-    }
-
-    public override LuaNode Copy(){
-        return new LuaNode(data);
-    }
-}
